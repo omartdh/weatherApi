@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <title>Weather Dashbord</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="navbar-brand text-center">Weather Dashbord</div>
+  </nav>
+
+
+  <div class="container">
+
+    <header class="jumbotron">
+    
+    </header>
+
+  
+    <div class="row text-center">
+
+      <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h4 class="card-title">Search for a City</h4>
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search-input">
+              <button class="btn btn-outline-success" type="submit" id="search-city">Search</button>
+            </form>
+            <div id="storage" style="background-color:white">
+              <button class="btn"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-left box" id="main-card">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div class="row">
+
+      <div class="col-lg-2 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-left box" id="card-11">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-left box" id="card-18">
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="col-lg-2 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-left box" id="card-25">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-left box" id="card-32">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-left box" id="card-39">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  
+
+  </div>
+  
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+
+
+
+
+
+const apiKey = "1eab01d7108337f226a88f463c7de917";
+
+const mainQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=";
+
+let cityName = "";
+let date = "";
+let temp = "";
+
+
+function inisialiser(){
+  console.log('its working');
+  $('#main-card').empty();
+  $('#card-11').empty();
+  $('#card-18').empty();
+  $('#card-25').empty();
+  $('#card-32').empty();
+  $('#card-39').empty();
+}
+
+$('#search-city').on('click', function(){
+  event.preventDefault();
+
+  cityName = $('#search-input').val();
+ let QueryURL = mainQueryURL + cityName + "&appid=" + apiKey;
+let counter = 40;
+
+
+  $.ajax({
+        url: QueryURL,
+        method: "GET"
+      }).then(function(response) {
+        console.log(response);
+
+        date = new Date(response.list[0].dt * 1000)
+        let dateStr = date.toLocaleString();
+        dateStr = dateStr.substring(0, 9);
+
+        temp = (response.list[0].main.temp * 9 / 5) - 459.67;
+        let tempStr = temp.toString();
+        tempStr = tempStr.substring(0, 2);
+
+        let iconCode = response.list[0].weather[0].icon;
+        let iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+        let iconLogo = $('<img>');
+        iconLogo.attr("src",iconUrl);
+
+        $('#main-card').append(iconLogo);
+        $('#main-card').append($('<h4>').text(response.city.name + " " + dateStr));
+        $('#main-card').append($('<div>').text("Temp: " + tempStr + " F"));
+        $('#main-card').append($('<div>').text('Humidity: '+response.list[0].main.humidity + " %"));
+        $('#main-card').append($('<div>').text('Wind Speed: '+ response.list[0].wind.speed + " MPH"));
+       
+         for(let i = 11; i < counter; i++){
+        
+        let  temp2 = (response.list[i].main.temp * 9 / 5) - 459.67;
+        let tempStr2 = temp2.toString();
+        tempStr2 = tempStr2.substring(0, 2);
+
+        let date2 = new Date(response.list[i].dt * 1000)
+        let dateStr2 = date2.toLocaleString();
+        dateStr2 = dateStr2.substring(0, 9);
+
+        let iconCode2 = response.list[i].weather[0].icon;
+        let iconUrl2 = "http://openweathermap.org/img/w/" + iconCode2 + ".png";
+        let iconLogo2 = $('<img>');
+        iconLogo2.attr("src",iconUrl2);
+
+        $('#card-'+ i).css('background-color', 'rgb(0, 102, 255)');
+        $('#card-'+ i).css('color', 'white');
+        $('#card-'+ i).append($('<div>').text(dateStr2));
+        $('#card-'+ i).append(iconLogo2);
+        $('#card-'+ i).append($('<div>').text("Temp: " + tempStr2 + " F"));
+        $('#card-'+ i).append($('<div>').text('Humidity: '+response.list[i].main.humidity + "%"));
+
+        i = i + 6;
+
+        }
+    
+            
+          })
+         
+         
+
+
+
+
+      inisialiser();
+
+})
+
+
+</script>
+</body>
+
+</html>
