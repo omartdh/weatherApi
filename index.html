@@ -174,7 +174,7 @@
 
           let lat = response.city.coord.lat
           let lon = response.city.coord.lon
-          let uvUrl = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+          let uvUrl = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
           $.ajax({
         url: uvUrl,
         method: "GET",
@@ -287,7 +287,7 @@ $.ajax({
 
     let lat = response.city.coord.lat
           let lon = response.city.coord.lon
-          let uvUrl = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+          let uvUrl = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
           $.ajax({
         url: uvUrl,
         method: "GET",
